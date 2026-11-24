@@ -1,0 +1,40 @@
+# Segredos: certificado e-CNPJ do cliente, senhas e Docker secrets (nunca versionar)
+secrets/
+*.pfx
+*.p12
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Dados fiscais de cliente real (CLAUDE.md: não versionar nem compartilhar)
+schemas/testes/resposta_*.xml
+schemas/testes/ret_*.xml
+schemas/testes/distDFeInt_cliente.xml
+schemas/testes/envelope_distDFeInt_*.xml
+prototipo/saida_*.xml
+prototipo/coletor/dados/
+
+# Banco local e bruto gerado pelo coletor
+*.db
+*.sqlite
+*.sqlite3
+pgdados/
+
+# Configuração local do Claude Code (settings.json, a versionar, fica de fora da regra)
+.claude/settings.local.json
+.claude/*.local.*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Sistema e editores
+.DS_Store
+.idea/
+.vscode/
+*.swp

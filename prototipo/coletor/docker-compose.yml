@@ -1,0 +1,43 @@
+# Esqueleto do MVP. Não testado: o Docker não está disponível no ambiente de desenvolvimento.
+# Segredos ficam fora do repositório, em ./secrets/ (ver .gitignore recomendado).
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: dfe
+      POSTGRES_USER: dfe
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_senha
+    secrets:
+      - pg_senha
+    volumes:
+      - pgdados:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  coletor:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DFE_PFX: /run/secrets/certificado_pfx
+      DFE_SENHA_ARQUIVO: /run/secrets/certificado_senha
+      DFE_DSN: postgresql://dfe:@postgres:5432/dfe
+    secrets:
+      - certificado_pfx
+      - certificado_senha
+    volumes:
+      - dados_bruto:/dados
+    # Execução manual por enquanto: docker compose run --rm coletor ciclo --cnpj ... --raiz /dados --dsn "$DFE_DSN"
+    command: ["--help"]
+    restart: "no"
+
+secrets:
+  pg_senha:
+    file: ./secrets/pg_senha.txt
+  certificado_pfx:
+    file: ./secrets/certificado.pfx
+  certificado_senha:
+    file: ./secrets/certificado_senha.txt
+
+volumes:
+  pgdados:
+  dados_bruto:
